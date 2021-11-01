@@ -50,16 +50,18 @@ export default class Sketch {
     }
 
     render() {
+
         this.time += 0.05
 
-        this.mesh.rotation.x = time / 2000
-        this.mesh.rotation.y = time / 1000
+        this.mesh.rotation.x = this.time / 2000
+        this.mesh.rotation.y = this.time / 1000
 
         this.renderer.render( this.scene, this.camera )
 
         requestAnimationFrame( this.render.bind(this) )
     }
 }
+
 
 new Sketch({
     domElement: document.getElementById('container')

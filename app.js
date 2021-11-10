@@ -25,7 +25,12 @@ export default class Sketch {
         this.scene = new THREE.Scene()
 
         // init the renderer and appending to container
-        this.renderer = new THREE.WebGLRenderer( { antialias: true } )
+        this.renderer = new THREE.WebGLRenderer( { 
+            antialias: true,
+            // this alpha option allow us to get the css proprieties
+            alpha: true,
+        
+        } )
         this.renderer.setPixelRatio(window.devicePixelRatio)
         this.container.appendChild( this.renderer.domElement )
 

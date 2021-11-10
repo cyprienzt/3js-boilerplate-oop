@@ -2,6 +2,9 @@
 import * as THREE from 'three'
 // orbit contols help us to interact with the object displayed
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// importing fragment and vertex 
+import fragment from './shaders/fragment.glsl'
+import vertex from './shaders/vertex.glsl'
 
 // exporting the whole class so we can import other modules
 export default class Sketch {
@@ -19,7 +22,7 @@ export default class Sketch {
 
         // init the camera based on container sizes and defining the position on z axis 
         this.camera = new THREE.PerspectiveCamera( 70, this.width/this.height, 0.01, 10 )
-        this.camera.position.z = 0.3
+        this.camera.position.z = 0.4
 
         // init the three scene
         this.scene = new THREE.Scene()
@@ -27,10 +30,8 @@ export default class Sketch {
         // init the renderer and appending to container
         this.renderer = new THREE.WebGLRenderer( { 
             antialias: true,
-            // this alpha option allow us to get the css proprieties
-            alpha: true,
-        
-        } )
+            // alpha option let us use the css proprieties in our canvas
+            alpha: true } )
         this.renderer.setPixelRatio(window.devicePixelRatio)
         this.container.appendChild( this.renderer.domElement )
 
@@ -64,10 +65,20 @@ export default class Sketch {
     addObjects() {
 
         // the geometry used , in our case a box
-        this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 )
+        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5 )
+        // this.geometry = new THREE.SphereBufferGeometry(0.2, 10, 10)
 
         // material used for our geometry
-        this.material = new THREE.MeshNormalMaterial()
+        // this.material = new THREE.MeshNormalMaterial()
+        // init the shader in our setup
+        this.material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 1.0 },
+                resolution: { value: new THREE.Vector2() }
+            },
+            vertexShader: vertex,
+            fragmentShader: fragment,
+        })
 
         // combining into a mesh the geometry and the material from above
         this.mesh = new THREE.Mesh( this.geometry, this.material )
